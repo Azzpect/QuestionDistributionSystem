@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAITM LAB</title>
+    <link rel="stylesheet" href="./public/css/main.css">
+</head>
+<body>
+    <div class="form-container">
+        <form>
+            <h1>Enter Admin Area</h1>
+            <input type="text" name="name" placeholder="Enter your admin ID:" title="Name cannot be empty" required>
+            <input type="password" name="admin_pass" placeholder="Enter the admin password:" required>
+            <button class="btn" type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+<script>
+    const f = document.querySelector("form");
+    f.addEventListener("submit", (e) => {
+        e.preventDefault();
+        f.reset();
+        submitForm();
+    })
+
+    function submitForm() {
+        fetch("./auth/admin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                adminName: document.querySelector("input[name=name]").value,
+                adminPassword: document.querySelector("input[name=admin_pass]").value
+            })
+        }).then(res => {
+            return res.json();
+        }).then(data => {
+            console.log(data);
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+</script>
+</html>

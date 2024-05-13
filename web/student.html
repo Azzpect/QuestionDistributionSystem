@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAITM LAB</title>
+    <link rel="stylesheet" href="./public/css/main.css">
+</head>
+<body>
+    <div class="form-container">
+        <form name="login">
+            <h1>Log Into Your Account</h1>
+            <input type="text" name="name" id="" placeholder="Enter your name:" title="Name cannot be empty" required>
+            <input type="number" name="univ_roll" id="" placeholder="Enter your University Roll no:" required>
+            <button class="btn" type="submit">Log In</button>
+        </form>
+    </div>
+    <div class="univ-pattern-msg">
+        <svg width="100" height="100" class="triangle">
+            <polygon points="7,0 0,14 14,14" fill="white" />
+            <polyline points="7,0 0,14" fill="none" stroke="black" stroke-width="1" />
+            <polyline points="7,0 14,14" fill="none" stroke="black" stroke-width="1" />
+            <polyline points="14,14 0,14" fill="none" stroke="white" stroke-width="1" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgb(252, 201, 33);"><path d="M12.884 2.532c-.346-.654-1.422-.654-1.768 0l-9 17A.999.999 0 0 0 3 21h18a.998.998 0 0 0 .883-1.467L12.884 2.532zM13 18h-2v-2h2v2zm-2-4V9h2l.001 5H11z"></path></svg>
+        <p class="msg">
+            Your University roll should start with 154 followed by your department id then your admission year and lastly your 3 digit id.
+        </p>
+    </div>
+    <div class="container">
+        <div class="action-container">
+            <img src="./public/images/daitm.png" alt="">
+            <div class="info">
+                <h3>Topic:</h3>
+                <h3>Name:</h3>
+                <h3>Univ-Roll:</h3>
+            </div>
+            <div class="btn-container">
+                <button class="btn" id="start-exam" onclick="openExamPortal()">Start Exam</button>
+                <button class="btn" id="log-out">Log Out</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let msg = document.querySelector(".univ-pattern-msg");
+    let univ = document.querySelector("input[name=univ_roll]");
+    let univ_pos = univ.getBoundingClientRect();
+    msg.style.top = `${univ_pos.bottom+5}px`;
+    msg.style.left = `${(univ_pos.right+univ_pos.left)/2}px`;
+</script>
+<script>
+    document.querySelector("input[name=univ_roll]").addEventListener("focusout", e => {
+        document.querySelector(".univ-pattern-msg").style.display = "none";
+    })
+</script>
+<script>
+    let login_form = document.querySelector("form[name=login]");
+    let univ_pattern = /^154012[2-9]{1}[2-9]{1}[0-9]{3}$/gm;
+    login_form.addEventListener("submit", e => {
+        e.preventDefault();
+        let formObj = new FormData(e.target);
+        let formData = {};
+        for(let pair of formObj.entries()) {
+            formData[pair[0]] = pair[1];
+        }
+        if(!univ_pattern.test(formData.univ_roll))
+            document.querySelector(".univ-pattern-msg").style.display = "flex";
+        else
+            document.querySelector(".form-container").style.display = "none";
+    })
+</script>
+<script>
+    function openExamPortal() {
+        window.location.href="./examPortal.html";
+    }
+</script>
+</html>

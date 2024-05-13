@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .container {
+        width: 50vw;
+        height: 30vh;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    h2 {
+        text-align: center;
+        text-decoration: underline;
+    }
+    .btn-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .btn {
+        width: 15vw;
+        height: 8vh;
+        border-radius: 18px;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .btn:hover {
+        transform: translateY(-10px);
+    }
+    .btn:nth-child(1) {
+        background-color: aqua;
+    }
+    .btn:nth-child(2) {
+        background-color: rgb(4, 184, 4);
+    }
+</style>
+<body>
+    <div class="container">
+        <h2>Select User Type</h2>
+        <div class="btn-container">
+            <button class="btn" onclick="navigatetoLogin(this)">Admin</button>
+            <button class="btn" onclick="navigatetoLogin(this)">Student</button>
+        </div>
+    </div>
+</body>
+<script>
+    function navigatetoLogin(e) {
+        if(e.innerHTML == "Admin")
+            window.location.href = "/admin";
+        else
+            window.location.href = "/student";
+    }
+</script>
+</html>

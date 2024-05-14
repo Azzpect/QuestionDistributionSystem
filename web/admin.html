@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="./public/css/main.css">
 </head>
 <body>
+    <div class="message-container">
+        <p class="message-body"></p>
+        <button onclick="hideMessage()">X</button>
+    </div>
     <div class="form-container">
         <form>
             <h1>Enter Admin Area</h1>
@@ -20,8 +24,8 @@
     const f = document.querySelector("form");
     f.addEventListener("submit", (e) => {
         e.preventDefault();
-        f.reset();
         submitForm();
+        f.reset();
     })
 
     function submitForm() {
@@ -37,10 +41,16 @@
         }).then(res => {
             return res.json();
         }).then(data => {
-            console.log(data);
+            showMessage(data.status, data.message);
+            if(data.status == "success") {
+                setTimeout(() => {
+                    window.location.href = "/admin/panel/" + data.token;
+                }, 2000);
+            }
         }).catch(e => {
-            console.log(e);
+            showMessage("error", e.message);
         })
     }
 </script>
+<script src="/public/scripts/eventHandlers.js"></script>
 </html>

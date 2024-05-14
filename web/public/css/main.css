@@ -4,11 +4,26 @@
     box-sizing: border-box;
     overflow: hidden;
 }
+.message-container {
+    display: none;
+    width: 100vw;
+    height: 5vh;
+    justify-content: space-between;
+    align-items: center;
+}
+.message-container>button {
+    width: 2%;
+    height: 70%;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+
 .form-container {
     background-color: whitesmoke;
     width: 100vw;
     height: 100vh;
-    /* display: none; */
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {

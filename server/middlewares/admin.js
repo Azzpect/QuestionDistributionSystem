@@ -2,15 +2,26 @@ function adminAuth(req, res, next) {
     let response = {};
     try {
         const { adminName, adminPassword } = req.body;
+        console.log(adminName, adminPassword)
         if(adminName == process.env.ADMIN && adminPassword == process.env.PASSWORD)
-            response = { status: "success", code: 200, message: "Successfully logged in as admin" };
+            response = { code: 200, body: { status: "success", message: "Successfully logged in as admin", token: process.env.ADMIN_ID }};
         else
-            response = { status: "error", code: 401, message: "Wrong credentials" };
+            response = { code: 401, body: { status: "error", message: "Wrong credentials" }};
     } catch (err) {
-        response = { status: "error", code: 500, message: "Internal server error" };
+        response = { code: 500, body: { status: "error", message: "Internal server error" }};
     }
     req.body.response = response;
     next();
 }
 
-module.exports = { adminAuth }
+function adminFormSubmit(req, res, next) {
+    try {
+        const { topic, code } = req.body;
+        console.log(topic, code);
+    } catch (error) {
+        console.log(error);
+    }
+    next();
+}
+
+module.exports = { adminAuth, adminFormSubmit };

@@ -28,28 +28,32 @@
         f.reset();
     })
 
-    function submitForm() {
-        fetch("./auth/admin", {
+    async function submitForm() {
+        let formData = new FormData();
+        formData.append("adminName", document.querySelector("input[name=name]").value)
+        formData.append("adminPassword", document.querySelector("input[name=admin_pass]").value)
+
+        const options =  {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                adminName: document.querySelector("input[name=name]").value,
-                adminPassword: document.querySelector("input[name=admin_pass]").value
-            })
-        }).then(res => {
-            return res.json();
-        }).then(data => {
-            showMessage(data.status, data.message);
-            if(data.status == "success") {
-                setTimeout(() => {
-                    window.location.href = "/admin/panel/" + data.token;
-                }, 2000);
-            }
+            body: formData
+        }
+        const uri = "./auth/admin";
+
+        let res;
+        
+        await formSubmission(uri, options).then(d => {
+            document.querySelector(".message-container").style.backgroundColor = "green";
+            res = d;
+            d.message = `${d.message}. Redirecting in 3s`
+            setTimeout(() => {
+               window.location.href = `/admin/panel/${d.token}`;  
+            }, 3000);
         }).catch(e => {
-            showMessage("error", e.message);
-        })
+            document.querySelector(".message-container").style.backgroundColor = "red";
+            res = e;
+        });
+        document.querySelector(".message-container").style.display = "flex";
+        document.querySelector(".message-body").innerHTML = `<h3>${res.status.toUpperCase()}!</h3>${res.message}`;
     }
 </script>
 <script src="/public/scripts/eventHandlers.js"></script>

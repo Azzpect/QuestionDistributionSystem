@@ -20,7 +20,7 @@ router.get("/admin/panel/:token", (req, res) => {
     if(token === process.env.ADMIN_ID)
         res.status(200).sendFile(path.join(__dirname, "../../web/adminPortal.html"));
     else
-        res.status(404).send("Wrong admin id");
+        res.status(404).sendFile(path.join(__dirname, "../../web/notFound.html"));
 })
 
 module.exports = router;

@@ -7,3 +7,19 @@ function showMessage(type, message) {
 function hideMessage() {
     document.querySelector(".message-container").style.display = "none";
 }
+
+//form submission
+async function formSubmission(uri, options) {
+    return new Promise(async (resolve, reject) => {
+        try {
+           const res = await fetch(uri, options);
+           const data = await res.json();
+           if(data.status != "success") {
+            throw new Error(data.message);
+           }
+           resolve(data);
+        } catch (err) {
+            reject({status: "error", message: err.message});
+        }
+    })
+}

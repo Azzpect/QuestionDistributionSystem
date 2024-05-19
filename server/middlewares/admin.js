@@ -2,9 +2,8 @@ function adminAuth(req, res, next) {
     let response = {};
     try {
         const { adminName, adminPassword } = req.body;
-        console.log(adminName, adminPassword)
         if(adminName == process.env.ADMIN && adminPassword == process.env.PASSWORD)
-            response = { code: 200, body: { status: "success", message: "Successfully logged in as admin", token: process.env.ADMIN_ID }};
+            response = { code: 200, body: { status: "success", message: "Logged in as admin", token: process.env.ADMIN_ID }};
         else
             response = { code: 401, body: { status: "error", message: "Wrong credentials" }};
     } catch (err) {

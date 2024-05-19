@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/main.css">
     <title>Document</title>
 </head>
 <style>
@@ -13,30 +14,17 @@
     body {
         background-color: whitesmoke;
     }
-    .container {
-        width: 35vw;
-        height: 60vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-evenly;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        border-radius: 13px;
-    }
+    
     form{
-        width: 100%;
-        height: 50%;
-        position: relative;
+        width: 50%;
+        height: 60%;
+        position: absolute;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
     }
-    input[type="text"] {
+    input[type="text"], input[type="time"] {
         width: 70%;
         height: 15%;
         outline: none;
@@ -45,8 +33,8 @@
         font-size: 18px;
     }
     button {
-        width: 50%;
-        height: 20%;
+        width: 20%;
+        height: 15%;
         border: none;
         border-radius: 13px;
         background-color: #40dd9a;
@@ -54,14 +42,45 @@
     }
 </style>
 <body>
-    <div class="container">
-        <h1>Admin Portal</h1>
-        <form>
-            <input type="text" name="topic" id="topic" placeholder="Enter topic name:">
-            <input type="text" name="code" id="code" placeholder="Enter subject code:">
-            <input type="file" name="questions" id="questions">
-            <button type="submit">Submit</button>
-        </form>
+    <div class="message-container">
+        <p class="message-body"></p>
+        <button onclick="hideMessage()">X</button>
     </div>
+    <form>
+            <h1>Admin Portal</h1>
+            <input type="text" name="topic" id="topic" placeholder="Enter topic name:" required>
+            <input type="text" name="code" id="code" placeholder="Enter subject code:" required>
+            <input type="time" name="time" id="time" required>
+            <input type="file" name="questions" id="questions" required>
+            <button type="submit">Submit</button>
+    </form>
 </body>
+<script src="/public/scripts/eventHandlers.js"></script>
+<script>
+    document.querySelector("form").addEventListener("submit", e => {
+        e.preventDefault();
+        submitForm();
+        document.querySelector("form").reset();
+    })
+    async function submitForm() {
+       let formData = new FormData();
+        formData.append("topic", document.querySelector("input[name='topic']").value);
+        formData.append("code", document.querySelector("input[name='code']").value);
+        formData.append("time", document.querySelector("input[name='time']").value);
+        formData.append("questions", document.querySelector("input[name='questions']").files[0]);
+
+        const options = {
+            method: "POST",
+            body: formData
+        }
+        const uri = "/admin/panel/form-submit";
+        try {
+            res = await formSubmission(uri, options);
+        } catch (err) {
+            res = {status: "error", message: err.message};    
+        }
+        showMessage(res.status, res.message);
+  
+    }
+</script>
 </html>

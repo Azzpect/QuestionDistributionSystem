@@ -35,25 +35,22 @@
 
         const options =  {
             method: "POST",
-            body: formData
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({"adminName": document.querySelector("input[name=name]").value,"adminPassword": document.querySelector("input[name=admin_pass]").value}) 
         }
         const uri = "./auth/admin";
-
-        let res;
-        
-        await formSubmission(uri, options).then(d => {
-            document.querySelector(".message-container").style.backgroundColor = "green";
-            res = d;
-            d.message = `${d.message}. Redirecting in 3s`
+        let res = {};
+        try {
+            res = await formSubmission(uri, options);
             setTimeout(() => {
-               window.location.href = `/admin/panel/${d.token}`;  
+               window.location.href = `/admin/panel/${res.token}`; 
             }, 3000);
-        }).catch(e => {
-            document.querySelector(".message-container").style.backgroundColor = "red";
-            res = e;
-        });
-        document.querySelector(".message-container").style.display = "flex";
-        document.querySelector(".message-body").innerHTML = `<h3>${res.status.toUpperCase()}!</h3>${res.message}`;
+        } catch (err) {
+            res = {status: "error", message: err.message};    
+        }
+        showMessage(res.status, res.message);
     }
 </script>
 <script src="/public/scripts/eventHandlers.js"></script>

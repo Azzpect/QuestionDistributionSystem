@@ -6,7 +6,7 @@ require("dotenv").config();
 const webpageRouter = require("./routes/webpages");
 const authRouter = require("./routes/auth");
 const { adminFormSubmit } = require("./middlewares/admin");
-const { internalErrorHandler, fileTypeFilter } = require("./utilities/functions");
+const { internalErrorHandler, fileTypeFilter, checkFiles } = require("./utilities/functions");
 
 const app = express();
 const port = process.env.PORT;
@@ -20,6 +20,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({storage: storage, fileFilter: fileTypeFilter}); 
+checkFiles();
 
 //middleware configurations
 app.use(cors());

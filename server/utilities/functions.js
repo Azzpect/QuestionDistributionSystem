@@ -1,3 +1,7 @@
+const fs = require("fs");
+const path = require("path");
+const { Logger } = require("./logger");
+
 function internalErrorHandler(err, req, res, next) {
     res.status(500);
     res.json({status: "error", message: err.message || "Internal server error."});
@@ -14,6 +18,31 @@ function fileTypeFilter(req, file, cb) {
     }
 }
 
+function checkFileExist(filePath) {
+    try {
+        fs.accessSync(filePath, fs.constants.F_OK); 
+        return true;
+    } catch (err) {
+       return false; 
+    }    
+}
+
+function checkFiles() {
+    if(checkFileExist(path.join(__dirname, "../data/students.json"))) {
+        if(checkFileExist(path.join(__dirname, "../data/exam.json"))) {
+            Logger.info("All files are ready.");                   
+        }
+        else{
+            Logger.warning("Missing Exam Details file.");
+            Logger.info("Creating Exam Details file");
+            fs.writeFileSync(path.join(__dirname, "../data/exam.json"), JSON.stringify({"topic": "", "code": "", "time": ""}, null, 2))
+        }
+    }
+    else{
+            Logger.error("Missing Student Details file.");
+        }
+}
 
 
-module.exports = { internalErrorHandler, fileTypeFilter }
+
+module.exports = { internalErrorHandler, fileTypeFilter, checkFiles }
